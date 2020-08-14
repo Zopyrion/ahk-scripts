@@ -7,6 +7,12 @@ PgUp::
 SoundGet, master_mute, , mute
 if(master_mute = "Off"){
 	SoundSet, +Change
+} else {
+	SoundGet, master_volume	
+	if(Floor(master_volume) = 0){
+		SoundSet, +1, , Mute
+		SoundSet, +Change
+	}
 }
 return
 
@@ -15,8 +21,17 @@ PgDn::
 SoundGet, master_mute, , mute
 if(master_mute = "Off"){
 	SoundSet, -Change
+	SoundGet, master_volume	
+	if(Floor(master_volume) = 0){
+		SoundSet, +1, , Mute
+	}
 }
 return
 
 ; Mute or unmute volume on pressing Home key
-Home::SoundSet, +1, , Mute 
+Home::
+SoundGet, master_volume	
+if(Floor(master_volume) > 0){
+	SoundSet, +1, , Mute
+}
+return
